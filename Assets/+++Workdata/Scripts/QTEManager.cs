@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,11 +10,11 @@ public class QTEManager : MonoBehaviour
     [SerializeField] PlayerController playerController;
 
     private string[] possibleKeys = Enumerable.Range('a', 26)
-        .Select(c => ((char)c).ToString())
-        .ToArray();
+        .Select(c => ((char)c).ToString()).ToArray();
 
     private string correctKey;
     private string eggKey;
+    private string eggKey2;
     private bool QTEActive = false;
     private bool isEggActive = false;
 
@@ -31,36 +32,50 @@ public class QTEManager : MonoBehaviour
         StartCoroutine(Egg());
     }
 
+
     IEnumerator Egg()
     {
         while (true)
         {
-           yield return new WaitForSeconds(10f);
+           yield return new WaitForSeconds(Random.Range(10f, 30f));
 
            isEggActive = true; 
-                   playerController.speed = 0f;
-           
-                   eggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
-                   EggText.text = "Press: " + eggKey.ToUpper();
-                   EggText.gameObject.SetActive(true);
-                   Debug.Log(buttonCount);
-                   
-                   while (buttonCount < 20)
-                   {
-                       if (Input.GetKeyDown(eggKey))
-                       {
-                           buttonCount++;
-                           EggText.text = eggKey.ToUpper();
-                           Debug.Log(buttonCount);
-                           yield return new WaitForSeconds(0.01f);
-                       }
-           
-                       yield return null;
-                   }
-                   playerController.speed = 3.5f;
-                   buttonCount = 0;
-                   EggText.gameObject.SetActive(false); 
-                   isEggActive = false;
+            playerController.speed = 0f;
+    
+            eggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
+            eggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
+            while (eggKey2.Equals(eggKey))
+            {
+                eggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
+            }
+
+            EggText.text = $"Press: {eggKey.ToUpper()} & {eggKey2.ToUpper()}";
+            EggText.gameObject.SetActive(true);
+            Debug.Log(buttonCount);
+            
+            while (buttonCount < 20)
+            {
+                if (Input.GetKeyDown(eggKey) && buttonCount % 2 == 0)
+                {
+                    buttonCount++;
+                    EggText.text = eggKey2.ToUpper();
+                    Debug.Log(buttonCount);
+                    yield return new WaitForSeconds(0.01f);
+                }
+                else if (Input.GetKeyDown(eggKey2) && buttonCount % 2 == 1)
+                {
+                    buttonCount++;
+                    EggText.text = eggKey.ToUpper();
+                    Debug.Log(buttonCount);
+                    yield return new WaitForSeconds(0.01f);
+                }
+    
+                yield return null;
+            }
+            playerController.speed = 3.5f;
+            buttonCount = 0;
+            EggText.gameObject.SetActive(false); 
+            isEggActive = false;
         }
         
     }
@@ -73,14 +88,14 @@ public class QTEManager : MonoBehaviour
             {
                 yield return null;
             }
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(Random.Range(2f, 5f));
 
             correctKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
-            QTEText.text = "Press: " + correctKey.ToUpper();
+            QTEText.text = correctKey.ToUpper();
             QTEActive = true;
             QTEText.gameObject.SetActive(true);
-            
 
+            timer = 0f;
             while (QTEActive)
             {
                 if (isEggActive)
