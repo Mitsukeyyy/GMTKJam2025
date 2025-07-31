@@ -13,17 +13,22 @@ public class QTEManager : MonoBehaviour
         .ToArray();
 
     private string correctKey;
+    private string eggKey;
     private bool QTEActive = false;
+    private bool isEggActive = false;
 
     [SerializeField] TextMeshProUGUI QTEText;
+    [SerializeField] TextMeshProUGUI EggText;
     private int buttonCount = 0;
+    public float timer = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         QTEText.gameObject.SetActive(false);
+        EggText.gameObject.SetActive(false);
         StartCoroutine(QTE());
-     //   StartCoroutine(Egg());
+        StartCoroutine(Egg());
     }
 
     IEnumerator Egg()
@@ -31,19 +36,21 @@ public class QTEManager : MonoBehaviour
         while (true)
         {
            yield return new WaitForSeconds(10f);
+
+           isEggActive = true; 
                    playerController.speed = 0f;
            
-                   correctKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
-                   QTEText.text = "Press: " + correctKey.ToUpper();
-                   QTEText.gameObject.SetActive(true);
+                   eggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
+                   EggText.text = "Press: " + eggKey.ToUpper();
+                   EggText.gameObject.SetActive(true);
                    Debug.Log(buttonCount);
                    
                    while (buttonCount < 20)
                    {
-                       if (Input.GetKeyDown(correctKey))
+                       if (Input.GetKeyDown(eggKey))
                        {
                            buttonCount++;
-                           QTEText.text = correctKey.ToUpper();
+                           EggText.text = eggKey.ToUpper();
                            Debug.Log(buttonCount);
                            yield return new WaitForSeconds(0.01f);
                        }
@@ -52,7 +59,8 @@ public class QTEManager : MonoBehaviour
                    }
                    playerController.speed = 3.5f;
                    buttonCount = 0;
-                   QTEText.gameObject.SetActive(false); 
+                   EggText.gameObject.SetActive(false); 
+                   isEggActive = false;
         }
         
     }
@@ -61,15 +69,27 @@ public class QTEManager : MonoBehaviour
     {
         while (true)
         {
+            while (isEggActive)
+            {
+                yield return null;
+            }
             yield return new WaitForSeconds(3f);
 
             correctKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             QTEText.text = "Press: " + correctKey.ToUpper();
             QTEActive = true;
             QTEText.gameObject.SetActive(true);
+            
 
             while (QTEActive)
             {
+                if (isEggActive)
+                {
+                    QTEText.gameObject.SetActive(false);
+                    QTEActive = false;
+                    break;
+                }
+
                 if (Input.GetKeyDown(correctKey))
                 {
                     if (playerController.speed < 6f && !Mathf.Approximately(playerController.speed, 5) )
@@ -100,6 +120,25 @@ public class QTEManager : MonoBehaviour
                         QTEText.color = Color.white;
                         Debug.Log(key);
                     }
+                }
+                
+                timer  += Time.deltaTime;
+                if (timer >= 3f)
+                {
+                    if (playerController.speed > 0)
+                    {
+                        playerController.speed -= 1f;
+                        Debug.Log("player didnt click");
+                    }
+
+                    timer = 0f;
+                    
+                    QTEText.color = Color.red;
+                    yield return new WaitForSeconds(0.2f);
+                    QTEText.color = Color.white;
+                    QTEText.gameObject.SetActive(false);
+                    QTEActive = false;
+                    break;
                 }
 
                 yield return null;
