@@ -28,7 +28,7 @@ public class QTEManager : MonoBehaviour
         QTEText.gameObject.SetActive(false);
         EggText.gameObject.SetActive(false);
         StartCoroutine(QTE());
-     //   StartCoroutine(Egg());
+        StartCoroutine(Egg());
     }
 
     IEnumerator Egg()
