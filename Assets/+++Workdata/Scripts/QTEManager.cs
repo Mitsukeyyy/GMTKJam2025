@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class QTEManager : MonoBehaviour
 {
@@ -20,28 +21,38 @@ public class QTEManager : MonoBehaviour
 
     [SerializeField] TextMeshProUGUI QTEText;
     [SerializeField] TextMeshProUGUI EggText;
+    [SerializeField] Image QTEContainer;
     private int buttonCount = 0;
     public float timer = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        QTEText.gameObject.SetActive(false);
+        setQTEActive(false);
         EggText.gameObject.SetActive(false);
         StartCoroutine(QTE());
         StartCoroutine(Egg());
     }
 
+    void setQTEActive(bool state)
+    {
+        QTEText.gameObject.SetActive(state);
+        QTEContainer.gameObject.SetActive(state);
+    }
 
     IEnumerator Egg()
     {
         while (true)
         {
-           yield return new WaitForSeconds(Random.Range(10f, 30f));
+            while (QTEActive)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(Random.Range(10f, 30f));
 
-           isEggActive = true; 
+            isEggActive = true; 
             playerController.speed = 0f;
-    
+
             eggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             eggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
             while (eggKey2.Equals(eggKey))
@@ -93,14 +104,14 @@ public class QTEManager : MonoBehaviour
             correctKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             QTEText.text = correctKey.ToUpper();
             QTEActive = true;
-            QTEText.gameObject.SetActive(true);
+            setQTEActive(true);
 
             timer = 0f;
             while (QTEActive)
             {
                 if (isEggActive)
                 {
-                    QTEText.gameObject.SetActive(false);
+                    setQTEActive(false);
                     QTEActive = false;
                     break;
                 }
@@ -109,7 +120,7 @@ public class QTEManager : MonoBehaviour
                 {
                     if (playerController.speed < 6f && !Mathf.Approximately(playerController.speed, 5) )
                     {
-                        playerController.speed += 2f;
+                        playerController.speed = 6f;
                     }
                     if (Mathf.Approximately(playerController.speed, 5))
                     {
@@ -121,7 +132,7 @@ public class QTEManager : MonoBehaviour
                     QTEText.text = correctKey.ToUpper();
                     yield return new WaitForSeconds(0.5f);
                     QTEText.color = Color.white;
-                    QTEText.gameObject.SetActive(false);
+                    setQTEActive(false);
                     QTEActive = false;
                 }
 
@@ -151,7 +162,7 @@ public class QTEManager : MonoBehaviour
                     QTEText.color = Color.red;
                     yield return new WaitForSeconds(0.2f);
                     QTEText.color = Color.white;
-                    QTEText.gameObject.SetActive(false);
+                    setQTEActive(false);
                     QTEActive = false;
                     break;
                 }
