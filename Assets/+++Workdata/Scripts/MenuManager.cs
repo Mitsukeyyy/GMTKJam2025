@@ -39,7 +39,6 @@ public class MenuManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
-        EditorApplication.isPlaying = false;
     }
 
     public void OpenCredits()
