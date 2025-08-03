@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform transformGroundCheck;
     private LayerMask layerGround;
     
+    [SerializeField] UIManager uiManager;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("dead");
+            uiManager.ShowLosePanel();
         }
     }
     
