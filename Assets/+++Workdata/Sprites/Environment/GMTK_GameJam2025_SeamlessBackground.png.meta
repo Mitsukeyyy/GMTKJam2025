@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4949ea2fd89553649a67701523f33849
+guid: c6475f5abab36784dad5f8b76dc0bd90
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -32338321389930180
-    second: GMTK_GameJam2025_SeamlessBackground_0
+      213: 8053822754815334188
+    second: QTEPlaceholder_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GMTK_GameJam2025_SeamlessBackground_0
+      name: QTEPlaceholder_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 7680
-        height: 2160
+        width: 268
+        height: 264
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c39bbe0d77c1d8ff0800000000000000
-      internalID: -32338321389930180
+      spriteID: c27d9b0ef1de4cf60800000000000000
+      internalID: 8053822754815334188
       vertices: []
       indices: 
       edges: []
@@ -160,7 +160,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      QTEPlaceholder_0: 8053822754815334188
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

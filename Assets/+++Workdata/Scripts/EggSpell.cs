@@ -8,13 +8,12 @@ public class EggSpell : MonoBehaviour
 
     //public Color flashColor = Color.black;
     public float flashDuration = 0.4f;
-    public Color flashColor = Color.red;
+    public Color flashColor = Color.blue;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
         sr.color = Color.white;
-        FlashSprite();
     }
 
     // Update is called once per frame
@@ -23,10 +22,10 @@ public class EggSpell : MonoBehaviour
         Color c = sr.color;
         Debug.Log($"Color r:{c.r:F2} g:{c.g:F2} b:{c.b:F2} a:{c.a:F2}");
     }
-
-    void FlashSprite()
+    
+    public void FlashSprite()
     {
-        sr.DOColor(flashColor, flashDuration).SetLoops(12, LoopType.Yoyo).SetEase(Ease.InOutSine);
+        sr.DOColor(flashColor, flashDuration).SetLoops(4, LoopType.Yoyo).SetEase(Ease.InOutSine);
       
     }
 }
