@@ -61,6 +61,11 @@ public class PlayerController : MonoBehaviour
             Debug.Log("dead");
             uiManager.ShowLosePanel();
         }
+
+        if (collision.gameObject.CompareTag("WinArea"))
+        {
+            uiManager.ShowWinPanel();
+        }
     }
     
 }

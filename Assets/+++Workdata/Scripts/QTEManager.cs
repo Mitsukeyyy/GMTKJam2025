@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class QTEManager : MonoBehaviour
 {
     [SerializeField] PlayerController playerController;
+    [SerializeField] EggSpell eggspell;
+    [SerializeField] EggSwitch eggSwitch;
 
     private string[] possibleKeys = Enumerable.Range('a', 26)
         .Select(c => ((char)c).ToString()).ToArray();
@@ -53,9 +55,13 @@ public class QTEManager : MonoBehaviour
             {
                 yield return null;
             }
+            
             yield return new WaitForSeconds(Random.Range(10f, 30f));
             isEggActive = true;
+            eggspell.FlashSprite();
+            yield return new WaitForSeconds(1.5f);
             playerController.speed = 0f;
+            eggSwitch.TriggerEggSpell();
             eggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             eggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
             while (eggKey2.Equals(eggKey))
@@ -65,15 +71,21 @@ public class QTEManager : MonoBehaviour
 
             EggText.text = $"Press: {eggKey.ToUpper()} & {eggKey2.ToUpper()}";
             EggText.gameObject.SetActive(true);
-            // Debug.Log(buttonCount);
 
-            while (buttonCount < 35)
+            int lastFrame = 0;
+
+            while (buttonCount < 24)
             {
                 if (Input.GetKeyDown(eggKey) && buttonCount % 2 == 0)
                 {
                     buttonCount++;
                     EggText.text = eggKey2.ToUpper();
-                    Debug.Log(buttonCount);
+                    int frameStep = buttonCount / 1;
+                    if (frameStep > lastFrame)
+                    {
+                        eggSwitch.AdvanceEggFrame();
+                        lastFrame = frameStep;
+                    }
                     yield return new WaitForSeconds(0.01f);
                 }
                 else if (Input.GetKeyDown(eggKey2) && buttonCount % 2 == 1)
@@ -81,11 +93,25 @@ public class QTEManager : MonoBehaviour
                     buttonCount++;
                     EggText.text = eggKey.ToUpper();
                     Debug.Log(buttonCount);
+
+                    int frameStep = buttonCount / 1;
+                    if (frameStep > lastFrame)
+                    {
+                        eggSwitch.AdvanceEggFrame();
+                        lastFrame = frameStep;
+                    }
                     yield return new WaitForSeconds(0.01f);
                 }
 
                 yield return null;
             }
+            for (int i = 2; i < eggSwitch.eggFrames.Length; i++)
+            {
+                eggSwitch.SetEggFrame(i);
+                yield return new WaitForSeconds(0.07f); 
+            }
+            eggSwitch.RevertToSalamander();
+            
             playerController.speed = 2.5f;
             buttonCount = 0;
             EggText.gameObject.SetActive(false);

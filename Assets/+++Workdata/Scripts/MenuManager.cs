@@ -7,27 +7,48 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] Button MainMenuButton;
     [SerializeField] Button ExitButton;
+    [SerializeField] private Button CreditsButton;
+    
+    [SerializeField] GameObject MainMenuPanel;
+    [SerializeField] GameObject CreditsPanel;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    void Awake()
+    {
+        CreditsPanel.SetActive(false);
+    }
     void Start()
     {
         MainMenuButton.onClick.AddListener(StartGame);
         ExitButton.onClick.AddListener(ExitGame);
+        
+       // CreditsPanel.SetActive(false);
     }
 
-    // Update is called once per frame
+    // Update is called once per frame  
     void Update()
     {
         
     }
     
-    void StartGame()
+    public void StartGame()
     {
         SceneManager.LoadScene(1);
     }
 
-    void ExitGame()
+    public void ExitGame()
     {
         Application.Quit();
         EditorApplication.isPlaying = false;
+    }
+
+    public void OpenCredits()
+    {
+        CreditsPanel.SetActive(true);
+    }
+
+    public void CloseCredits()
+    {
+        CreditsPanel.SetActive(false);
     }
 }

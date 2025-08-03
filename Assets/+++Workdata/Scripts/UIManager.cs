@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Time.timeScale = 1;
         menu.SetActive(false);
         winPanel.SetActive(false);
         losePanel.SetActive(false);
@@ -52,15 +53,18 @@ public class UIManager : MonoBehaviour
     void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
     }
 
     public void ShowWinPanel()
     {
         winPanel.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void ShowLosePanel()
     {
         losePanel.SetActive(true);
+        Time.timeScale = 0;
     }
 }
