@@ -297,7 +297,14 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SalamanderEgg7_0: -8808160299018882531
+      SalamanderEgg7_1: -1935040246511137391
+      SalamanderEgg7_2: 3731022909139279449
+      SalamanderEgg7_3: 6719293169586467666
+      SalamanderEgg7_4: 2467891381251867859
+      SalamanderEgg7_5: 6702293589510320646
+      SalamanderEgg7_6: 2767515517514240125
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

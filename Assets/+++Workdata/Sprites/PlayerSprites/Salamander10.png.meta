@@ -172,7 +172,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Salamander10_0: 2307053280856858698
+      Salamander10_1: 4032537958837013886
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
