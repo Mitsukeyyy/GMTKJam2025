@@ -37,6 +37,12 @@ public class PlayerController : MonoBehaviour
             {
                 JumpFunction();
             }
+
+            if (speed > maxSpeed)
+            {
+                speed = maxSpeed;
+            }
+            
             rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
         }
     }
