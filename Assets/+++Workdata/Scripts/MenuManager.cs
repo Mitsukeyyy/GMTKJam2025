@@ -21,7 +21,6 @@ public class MenuManager : MonoBehaviour
     {
         MainMenuButton.onClick.AddListener(StartGame);
         ExitButton.onClick.AddListener(ExitGame);
-        
        // CreditsPanel.SetActive(false);
     }
 

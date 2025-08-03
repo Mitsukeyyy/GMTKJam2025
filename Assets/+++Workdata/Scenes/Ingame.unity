@@ -2336,6 +2336,8 @@ MonoBehaviour:
   exitButton1: {fileID: 894263782}
   restartButton2: {fileID: 1842720963}
   exitButton2: {fileID: 1851876896}
+  QTE: {fileID: 860294477}
+  EggQTE: {fileID: 1679658110}
 --- !u!1 &738942789
 GameObject:
   m_ObjectHideFlags: 0
@@ -5383,7 +5385,7 @@ GameObject:
   m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
-  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5396,7 +5398,7 @@ Transform:
   m_GameObject: {fileID: 1825393841}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.917, y: -0.727, z: 0}
+  m_LocalPosition: {x: 0.809, y: -0.727, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

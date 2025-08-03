@@ -61,7 +61,6 @@ public class QTEManager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(10f, 30f));
             isEggActive = true;
             eggspell.FlashSprite();
-            eggSwitch.TriggerEggSpell();
             string currentEggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             string currentEggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
 
@@ -76,14 +75,15 @@ public class QTEManager : MonoBehaviour
 
             yield return new WaitForSeconds(1.5f);
 
+            eggSwitch.TriggerEggSpell();
             instructionText.gameObject.SetActive(false);
             EggKey2.SetActive(false);
-            
+
 
             playerController.speed = 0f;
             int lastFrame = 0;
 
-            while (buttonCount < 24)
+            while (buttonCount < 30)
             {
                 if (Input.GetKeyDown(currentEggKey) && buttonCount % 2 == 0)
                 {
@@ -132,6 +132,7 @@ public class QTEManager : MonoBehaviour
 
     IEnumerator QTE()
     {
+        int x = 0;
         while (true)
         {
             while (isEggActive)
@@ -180,7 +181,7 @@ public class QTEManager : MonoBehaviour
                 }
 
                 timer += Time.deltaTime;
-                if (timer >= 2f)
+                if (timer > 1.5f)
                 {
                     if (playerController.speed > 0)
                     {
@@ -193,9 +194,17 @@ public class QTEManager : MonoBehaviour
                     QTEText.color = Color.red;
                     yield return new WaitForSeconds(0.2f);
                     QTEText.color = Color.white;
+                    x = 0;
                     QTEContainer.SetActive(false);
                     QTEActive = false;
                     break;
+                }
+                else if (timer > 0.75f && x < 0 && playerController.speed > 0)
+                {
+
+                    playerController.speed -= 0.5f;
+                    x += 1;
+                
                 }
 
                 yield return null;
