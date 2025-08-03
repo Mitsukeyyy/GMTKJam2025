@@ -65,9 +65,9 @@ public class QTEManager : MonoBehaviour
 
             EggText.text = $"Press: {eggKey.ToUpper()} & {eggKey2.ToUpper()}";
             EggText.gameObject.SetActive(true);
-            Debug.Log(buttonCount);
+            // Debug.Log(buttonCount);
 
-            while (buttonCount < 20)
+            while (buttonCount < 35)
             {
                 if (Input.GetKeyDown(eggKey) && buttonCount % 2 == 0)
                 {
@@ -86,7 +86,7 @@ public class QTEManager : MonoBehaviour
 
                 yield return null;
             }
-            playerController.speed = 3.5f;
+            playerController.speed = 2.5f;
             buttonCount = 0;
             EggText.gameObject.SetActive(false);
             isEggActive = false;
@@ -121,15 +121,7 @@ public class QTEManager : MonoBehaviour
 
                 if (Input.GetKeyDown(correctKey))
                 {
-                    if (playerController.speed < 6f && !Mathf.Approximately(playerController.speed, 5))
-                    {
-                        playerController.speed = 6f;
-                    }
-                    if (Mathf.Approximately(playerController.speed, 5))
-                    {
-                        playerController.speed++;
-                    }
-
+                    playerController.speed++;
                     QTEText.color = Color.green;
                     Debug.Log(correctKey);
                     QTEText.text = correctKey.ToUpper();
