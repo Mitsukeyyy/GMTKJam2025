@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class QTEManager : MonoBehaviour
@@ -22,6 +20,7 @@ public class QTEManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI QTEText;
     [SerializeField] TextMeshProUGUI EggText;
     [SerializeField] Image QTEContainer;
+    [SerializeField] GameObject circleTimer;
     private int buttonCount = 0;
     public float timer = 0;
 
@@ -34,10 +33,16 @@ public class QTEManager : MonoBehaviour
         StartCoroutine(Egg());
     }
 
+    void Update()
+    {
+        updateCountdown();
+    }
+
     void setQTEActive(bool state)
     {
         QTEText.gameObject.SetActive(state);
         QTEContainer.gameObject.SetActive(state);
+        circleTimer.SetActive(false);
     }
 
     IEnumerator Egg()
@@ -49,10 +54,8 @@ public class QTEManager : MonoBehaviour
                 yield return null;
             }
             yield return new WaitForSeconds(Random.Range(10f, 30f));
-
-            isEggActive = true; 
+            isEggActive = true;
             playerController.speed = 0f;
-
             eggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             eggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
             while (eggKey2.Equals(eggKey))
@@ -63,7 +66,7 @@ public class QTEManager : MonoBehaviour
             EggText.text = $"Press: {eggKey.ToUpper()} & {eggKey2.ToUpper()}";
             EggText.gameObject.SetActive(true);
             Debug.Log(buttonCount);
-            
+
             while (buttonCount < 20)
             {
                 if (Input.GetKeyDown(eggKey) && buttonCount % 2 == 0)
@@ -80,15 +83,15 @@ public class QTEManager : MonoBehaviour
                     Debug.Log(buttonCount);
                     yield return new WaitForSeconds(0.01f);
                 }
-    
+
                 yield return null;
             }
             playerController.speed = 3.5f;
             buttonCount = 0;
-            EggText.gameObject.SetActive(false); 
+            EggText.gameObject.SetActive(false);
             isEggActive = false;
         }
-        
+
     }
 
     IEnumerator QTE()
@@ -118,7 +121,7 @@ public class QTEManager : MonoBehaviour
 
                 if (Input.GetKeyDown(correctKey))
                 {
-                    if (playerController.speed < 6f && !Mathf.Approximately(playerController.speed, 5) )
+                    if (playerController.speed < 6f && !Mathf.Approximately(playerController.speed, 5))
                     {
                         playerController.speed = 6f;
                     }
@@ -147,8 +150,8 @@ public class QTEManager : MonoBehaviour
                         Debug.Log(key);
                     }
                 }
-                
-                timer  += Time.deltaTime;
+
+                timer += Time.deltaTime;
                 if (timer >= 3f)
                 {
                     if (playerController.speed > 0)
@@ -158,7 +161,7 @@ public class QTEManager : MonoBehaviour
                     }
 
                     timer = 0f;
-                    
+
                     QTEText.color = Color.red;
                     yield return new WaitForSeconds(0.2f);
                     QTEText.color = Color.white;
@@ -171,4 +174,17 @@ public class QTEManager : MonoBehaviour
             }
         }
     }
+
+    void updateCountdown() {
+        if (QTEActive)
+        {
+            circleTimer.SetActive(true);
+
+            float normalizedValue = Mathf.Clamp(timer / 3f, 0.0f, 1.0f);
+            
+            Image circleImage = circleTimer.GetComponent<Image>();
+            circleImage.fillAmount = normalizedValue;
+        }
+    }
+
 }
