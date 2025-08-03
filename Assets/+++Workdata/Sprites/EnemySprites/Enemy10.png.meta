@@ -55,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -122,28 +122,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Enemy10_0
-      rect:
-        serializedVersion: 2
-        x: 1540
-        y: 683
-        width: 46
-        height: 42
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a45fd463eac2ff9d0800000000000000
-      internalID: -2738420921670961846
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Enemy10_1
       rect:
         serializedVersion: 2
@@ -152,7 +130,7 @@ TextureImporter:
         width: 880
         height: 453
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,28 +144,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Enemy10_2
-      rect:
-        serializedVersion: 2
-        x: 1901
-        y: 647
-        width: 17
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 700631198ac746fd0800000000000000
-      internalID: -2349616042150240249
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Enemy10_3
       rect:
         serializedVersion: 2
@@ -196,7 +152,7 @@ TextureImporter:
         width: 6
         height: 6
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -213,7 +169,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b6dcf84cd85ecfe4599e8b6be4db9db5
     internalID: 0
     vertices: []
     indices: 
@@ -227,6 +183,7 @@ TextureImporter:
       Enemy10_1: -3937630474879917982
       Enemy10_2: -2349616042150240249
       Enemy10_3: -7519918329980743924
+      Enemy10_4: -2062494073
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
