@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,23 +13,24 @@ public class QTEManager : MonoBehaviour
         .Select(c => ((char)c).ToString()).ToArray();
 
     private string correctKey;
-    private string eggKey;
-    private string eggKey2;
     private bool QTEActive = false;
     private bool isEggActive = false;
 
     [SerializeField] TextMeshProUGUI QTEText;
-    [SerializeField] TextMeshProUGUI EggText;
-    [SerializeField] Image QTEContainer;
-    [SerializeField] GameObject circleTimer;
+    [SerializeField] TextMeshProUGUI instructionText;
+    [SerializeField] GameObject EggKey1;
+    [SerializeField] GameObject EggKey2;
+
+    [SerializeField] GameObject QTEContainer;
+    [SerializeField] GameObject QTECountdown;
     private int buttonCount = 0;
     public float timer = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        setQTEActive(false);
-        EggText.gameObject.SetActive(false);
+        QTEContainer.SetActive(false);
+        setEggKeysActive(false);
         StartCoroutine(QTE());
         StartCoroutine(Egg());
     }
@@ -38,11 +40,11 @@ public class QTEManager : MonoBehaviour
         updateCountdown();
     }
 
-    void setQTEActive(bool state)
+    void setEggKeysActive(bool state)
     {
-        QTEText.gameObject.SetActive(state);
-        QTEContainer.gameObject.SetActive(state);
-        circleTimer.SetActive(false);
+        EggKey1.SetActive(state);
+        EggKey2.SetActive(state);
+        instructionText.gameObject.SetActive(state);
     }
 
     IEnumerator Egg()
@@ -55,32 +57,41 @@ public class QTEManager : MonoBehaviour
             }
             yield return new WaitForSeconds(Random.Range(10f, 30f));
             isEggActive = true;
-            playerController.speed = 0f;
-            eggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
-            eggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
-            while (eggKey2.Equals(eggKey))
+
+            string currentEggKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
+            string currentEggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
+
+            while (currentEggKey2.Equals(currentEggKey))
             {
-                eggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
+                currentEggKey2 = possibleKeys[Random.Range(0, possibleKeys.Length)];
             }
 
-            EggText.text = $"Press: {eggKey.ToUpper()} & {eggKey2.ToUpper()}";
-            EggText.gameObject.SetActive(true);
-            // Debug.Log(buttonCount);
+            EggKey1.GetComponentInChildren<TextMeshProUGUI>().text = currentEggKey.ToUpper();
+            EggKey2.GetComponentInChildren<TextMeshProUGUI>().text = currentEggKey2.ToUpper();
+            setEggKeysActive(true);
 
-            while (buttonCount < 35)
+            yield return new WaitForSeconds(1f);
+
+            instructionText.gameObject.SetActive(false);
+            EggKey2.SetActive(false);
+            
+
+            playerController.speed = 0f;
+
+            while (buttonCount < 24)
             {
-                if (Input.GetKeyDown(eggKey) && buttonCount % 2 == 0)
+                if (Input.GetKeyDown(currentEggKey) && buttonCount % 2 == 0)
                 {
                     buttonCount++;
-                    EggText.text = eggKey2.ToUpper();
-                    Debug.Log(buttonCount);
+                    EggKey1.SetActive(false);
+                    EggKey2.SetActive(true);
                     yield return new WaitForSeconds(0.01f);
                 }
-                else if (Input.GetKeyDown(eggKey2) && buttonCount % 2 == 1)
+                else if (Input.GetKeyDown(currentEggKey2) && buttonCount % 2 == 1)
                 {
                     buttonCount++;
-                    EggText.text = eggKey.ToUpper();
-                    Debug.Log(buttonCount);
+                    EggKey2.SetActive(false);
+                    EggKey1.SetActive(true);
                     yield return new WaitForSeconds(0.01f);
                 }
 
@@ -88,7 +99,7 @@ public class QTEManager : MonoBehaviour
             }
             playerController.speed = 2.5f;
             buttonCount = 0;
-            EggText.gameObject.SetActive(false);
+            setEggKeysActive(false);
             isEggActive = false;
         }
 
@@ -107,14 +118,14 @@ public class QTEManager : MonoBehaviour
             correctKey = possibleKeys[Random.Range(0, possibleKeys.Length)];
             QTEText.text = correctKey.ToUpper();
             QTEActive = true;
-            setQTEActive(true);
+            QTEContainer.SetActive(true);
 
             timer = 0f;
             while (QTEActive)
             {
                 if (isEggActive)
                 {
-                    setQTEActive(false);
+                    QTEContainer.SetActive(false);
                     QTEActive = false;
                     break;
                 }
@@ -127,7 +138,7 @@ public class QTEManager : MonoBehaviour
                     QTEText.text = correctKey.ToUpper();
                     yield return new WaitForSeconds(0.5f);
                     QTEText.color = Color.white;
-                    setQTEActive(false);
+                    QTEContainer.SetActive(false);
                     QTEActive = false;
                 }
 
@@ -144,7 +155,7 @@ public class QTEManager : MonoBehaviour
                 }
 
                 timer += Time.deltaTime;
-                if (timer >= 3f)
+                if (timer >= 2f)
                 {
                     if (playerController.speed > 0)
                     {
@@ -157,7 +168,7 @@ public class QTEManager : MonoBehaviour
                     QTEText.color = Color.red;
                     yield return new WaitForSeconds(0.2f);
                     QTEText.color = Color.white;
-                    setQTEActive(false);
+                    QTEContainer.SetActive(false);
                     QTEActive = false;
                     break;
                 }
@@ -170,11 +181,11 @@ public class QTEManager : MonoBehaviour
     void updateCountdown() {
         if (QTEActive)
         {
-            circleTimer.SetActive(true);
+            QTECountdown.SetActive(true);
 
-            float normalizedValue = Mathf.Clamp(timer / 3f, 0.0f, 1.0f);
+            float normalizedValue = Mathf.Clamp(timer / 2f, 0.0f, 1.0f);
             
-            Image circleImage = circleTimer.GetComponent<Image>();
+            Image circleImage = QTECountdown.GetComponent<Image>();
             circleImage.fillAmount = normalizedValue;
         }
     }
